@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Select a Class
+{% endblock %}
+
+{% block main %}
+
+  <style>
+    #select_class {
+      text-align: left;
+      width: 60%;
+      margin: auto;
+    }
+    #period {
+      color: #993399;
+    }
+  </style>
+
+  <div id="select_class">
+    <h5 class="mb-3">Click on a Class to Track Participation</h5>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">PD</th>
+          <th scope="col">Class</th>
+        </tr>
+      </thead>
+      <tbody>
+       {% for class in classes %}
+        <tr>
+          <td id="period">{{ class.class_period }}</td>
+          <td><a class="text-secondary" href="/select?class={{ class.id }}">{{ class.class_name }}</a></td>
+        </tr>
+       {% endfor %}
+      </tbody>
+    </table>
+    </div>
+
+{% endblock %}

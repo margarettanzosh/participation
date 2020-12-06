@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Classes
+{% endblock %}
+
+{% block main %}
+    <style>
+      .table td {
+        font-size: .9rem;
+        padding: .6rem;
+        width: .6rem;
+      }
+      .container {
+        /* width: 80%; */
+      }
+    </style>
+    <div class="container">
+        <table class="table table-striped text-left">
+          <thead>
+              <tr>
+                  <th>PD</th>
+                  <th>Class</th>
+                  <th>Code</th>
+              </tr>
+          </thead>
+          <tbody>
+
+        {% for class in classes %}
+            <tr>
+                <td>{{ class.class_period }}</td>
+                <td>{{ class.class_name }}</td>
+                <td>{{ class.class_code }}</td>
+            </tr>
+        {% endfor %}
+
+
+
+            <tr>
+              <form action="/classes" method="post">
+                <td>
+                <!-- <div class="form-group"> -->
+                    <input class="form-control" name="period" placeholder="Enter PD" type="text">
+                <!-- </div> -->
+                </td>
+                <td>
+                <!-- <div class="form-group"> -->
+                    <input autocomplete="off" class="form-control" name="class_name" placeholder="Enter Class" type="text">
+                <!-- </div> -->
+                </td>
+                <td>
+                <!-- <div class="form-group"> -->
+                    <input class="form-control" name="code" placeholder="Enter Code" type="text">
+                <!-- </div> -->
+                </td>
+                <td>
+                <button class="btn btn-primary" type="submit">Add Class</button>
+                </td>
+              </form>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+{% endblock %}

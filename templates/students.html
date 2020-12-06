@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Students
+{% endblock %}
+
+{% block main %}
+<div class="upload">
+  <h5 class="mb-3">Upload Individual Student</h5>
+    <form action="/students" method="post">
+        <div class="form-group">
+          <select class="form-control" name="class_id">
+            <option selected>Choose a class</option>
+            {% for class in classes %}
+            <option value={{ class.id }}>{{ class.class_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+
+        <div class="form-group">
+            <input class="form-control" name="first_name" placeholder="First Name" type="text">
+
+        </div>
+        <div class="form-group">
+            <input class="form-control" name="last_name" placeholder="Last Name" type="text">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="student_id" placeholder="Student ID" type="text">
+        </div>
+
+        <button class="btn btn-primary mt-2 mb-4" type="submit">Add Student to Class</button>
+
+      </form>
+      <p>If you would like to upload an entire class of students, download a template
+          from an assignment in skedula. You can then do a <a href="/upload">batch upload.</a>
+      </p>
+
+      <script>
+      // Add the following code if you want the name of the file appear on select
+      $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+      </script>
+
+</div>
+{% endblock %}

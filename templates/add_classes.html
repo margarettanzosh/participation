@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Classes
+{% endblock %}
+
+{% block main %}
+<style>
+  #select_class {
+    text-align: left;
+    width: 80%;
+    margin: auto;
+  }
+  #period {
+    color: #993399;
+  }
+  .container {
+    width: 60%;
+  }
+  .sm {
+    width: 10% !important;
+  }
+  .lg {
+    width: 45% !important;
+  }
+  .md {
+    width: 25% !important;
+  }
+  .outdent {
+    margin-left: -4% !important;
+    margin-right: -4% !important;
+  }
+  .indent {
+    /* margin-left: 4% !important;
+    margin-right: 4% !important; */
+    width: 92% !important;
+    margin-left: 4% !important;
+    /* margin-right: -2% !important; */
+  }
+</style>
+
+<div id="container">
+  <h5 class="mb-3">Add Class for Participation Points</h5>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">PD</th>
+        <th scope="col">Class</th>
+        <th scope="col">Section</th>
+        <th scope="col">Code</th>
+      </tr>
+    </thead>
+    <tbody>
+     {% for class in classes %}
+      <tr>
+        <td id="period">{{ class.class_period }}</td>
+        <td class="text-secondary">{{ class.class_name }}</td>
+        <td class="text-secondary">{{ class.section }}</td>
+        <td class="text-secondary">{{ class.class_code }}</td>
+      </tr>
+     {% endfor %}
+    </tbody>
+  </table>
+
+              <form class="outdent" action="/classes" method="post">
+
+
+                    <input class="form-control sm" name="period" placeholder="Enter PD" type="text">
+
+                    <input class="form-control lg" name="class_name" placeholder="Enter Class Name" type="text">
+
+                    <input class="form-control sm" name="class_section" placeholder="Section" type="text">
+
+                    <input class="form-control md" name="code" placeholder="Enter Code" type="text">
+
+
+                <button class="btn btn-primary btn-block indent" type="submit">Add Class</button>
+
+              </form>
+
+    </div>
+{% endblock %}

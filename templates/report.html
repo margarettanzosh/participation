@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Download Report
+{% endblock %}
+
+{% block main %}
+
+  <div>
+    <form action="/report" method="POST">
+
+      <h5 class="mb-3">Download Skedula CSV File</h5>
+      <select name="class_id" class="custom-select">
+        <option value="0" selected>Choose a Class</option>
+        {% for class in classes %}
+        <option value={{ class.id }}>{{ class.class_name }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="start">Start date:</label>
+      <input class="form-control mr-4" id="start" type="date" name="start_date">
+
+      <label for="end">End date:</label>
+      <input class="form-control" id="end" type="date" name="end_date">
+
+      <button class="btn btn-primary" type="submit">Generate Report</button>
+
+  </div>
+
+{% endblock %}

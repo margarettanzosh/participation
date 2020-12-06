@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Students
+{% endblock %}
+
+{% block main %}
+
+  <style>
+    .child-rollover {
+      background-color: #A9A9A9;
+    }
+    .child-click {
+      background-color: #993399;
+    }
+  </style>
+
+      <div class="container">
+        <h5 class="mb-3">{{ class_name }}</h5>
+        <div class="d-flex flex-wrap">
+          {% for student in students %}
+          <div id={{ student[2] }} class="p-3 box choice">{{ student[0] }} {{ student[1] }}</div>
+          {% endfor %}
+        </div>
+        <button onclick="save({{ selected_class }})" class="btn btn-primary btn-block mt-3" id="submit">Submit</button>
+      </div>
+
+      <script>
+
+        let student_credits = []
+
+        $('.choice').hover(function(){
+            $(this).toggleClass('child-rollover')
+        })
+
+        $('.choice').click(function(event){
+            // student_name = event.target.innerText;
+            // student_id = event.target.id;
+            // student_credits.push([student_name, student_id])
+            $(this).toggleClass('child-click')
+        })
+
+        function whichClicked() {
+          $('.choice').each(function() {
+            if (($(this).hasClass('child-click'))) {
+              console.log($(this))
+              let student_name = $(this)[0].innerText;
+              let student_id = $(this)[0].id;
+              student_credits.push([student_name, student_id])
+            }
+          })
+        }
+
+
+        // POST
+        function save(selected_class) {
+          whichClicked()
+
+          fetch('/save', {
+
+              // Declare what type of data we're sending
+              headers: {
+                'Content-Type': 'application/json'
+              },
+
+              // Specify the method
+              method: 'POST',
+
+              // A JSON payload
+              body: JSON.stringify({
+                  "selected_class": selected_class, "points": student_credits
+              })
+          }).then(function (response) { // At this point, Flask has printed our JSON
+              return response.text();
+          }).then(function (text) {
+
+              console.log('POST response: ');
+
+              // Should be 'OK' if everything was successful
+              console.log(text);
+              window.location.href='/participation';
+          });
+        }
+
+
+</script>
+{% endblock %}
