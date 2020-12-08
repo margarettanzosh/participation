@@ -176,9 +176,9 @@ def generate_large_csv(dfilename):
         try:
             for row in contents:
                 yield ','.join(row) + '\n'
-        except NameError:
-            flash("Problem downloading, try again.")
-            return
+#         except NameError:
+#             flash("Problem downloading, try again.")
+#             return
     return Response(generate(), mimetype='text/csv')
 
 
