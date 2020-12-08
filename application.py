@@ -170,12 +170,14 @@ def save():
         return jsonify(message)  # serialize and use JSON headers
 
 
-@app.route('/download/<string:filename>')
-def generate_large_csv(filename):
+@app.route('/download/<string:dfilename>')
+def generate_large_csv(dfilename):
     def generate():
-        # for row in iter_all_rows():
-        for row in contents:
-            yield ','.join(row) + '\n'
+        try:
+            for row in contents:
+                yield ','.join(row) + '\n'
+        except NameError:
+            flash("Problem downloading, try again.")        
     return Response(generate(), mimetype='text/csv')
 
 
@@ -212,8 +214,8 @@ def report():
         section = classes[0]['section']
 
         # Create file to upload to skedula
-        global filename
-        filename = classes[0]['class_name'] + '-' + str(start_date)  + '-' +  str(end_date) + ".csv"
+        global dfilename
+        dfilename = classes[0]['class_name'] + '-' + str(start_date)  + '-' +  str(end_date) + ".csv"
         # file = open(skedula_file, "w")
         # writer = csv.writer(file)
         # writer.writerow((["LastName","FirstName","ID","Course","Section","Grade"]))
@@ -232,7 +234,7 @@ def report():
         # print(contents)
 
         # return redirect('/<filename>')
-        return redirect(url_for('generate_large_csv', filename=filename))
+        return redirect(url_for('generate_large_csv', dfilename=dfilename))
         return redirect("/report")
 
     # GET Request
