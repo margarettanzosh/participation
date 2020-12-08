@@ -80,15 +80,21 @@ def upload_file():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         if file and allowed_file(file.filename):
+#             filename = secure_filename(file.filename)
+#             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        #store the file contents as a string
+        fstring = file.read().decode("utf-8")
+
+        #create list of dictionaries keyed by header row
+        csv_dicts = [{k: v for k, v in row.items()} for row in csv.DictReader(fstring.splitlines(), skipinitialspace=True)]
 
         # Open file and save students in SQL
         class_id = request.form.get("class_id")
-        f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        reader = csv.DictReader(f)
-        fields = reader.fieldnames
+#         f = open(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         reader = csv.DictReader(f)
+#         fields = reader.fieldnames
 
         for row in reader:
             id = row["ID"]
@@ -101,7 +107,7 @@ def upload_file():
             # rows = db.execute("SELECT id FROM classes WHERE class_name = ?", request.form.get("class_name"))
             db.execute("INSERT INTO students_classes (student_id, class_id) VALUES(?, ?)", id, class_id)
 
-        f.close()
+#         f.close()
         flash('Students uploaded')
         return redirect('/students')
 
