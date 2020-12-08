@@ -314,7 +314,7 @@ def classes():
 
         # Add class to database
         try:
-            class_id = db.execute("INSERT INTO classes (teacher_id, class_name, class_period, class_code) VALUES(?, ?, ?, ?)",
+            class_id = db.execute("INSERT INTO classes (teacher_id, class_name, class_period, class_code, section) VALUES(?, ?, ?, ?, ?)",
                             session["user_id"],
                             request.form.get("class_name"),
                             request.form.get("period"),
