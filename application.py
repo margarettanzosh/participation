@@ -45,6 +45,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Configure CS50 Library to use SQLite database
 db = SQL(os.environ.get("DATABASE_URL"))
 
+contents = []
+
 
 @app.route("/")
 @login_required
@@ -173,12 +175,8 @@ def save():
 @app.route('/download/<string:dfilename>')
 def generate_large_csv(dfilename):
     def generate():
-        try:
-            for row in contents:
-                yield ','.join(row) + '\n'
-#         except NameError:
-#             flash("Problem downloading, try again.")
-#             return
+        for row in contents:
+            yield ','.join(row) + '\n'
     return Response(generate(), mimetype='text/csv')
 
 
