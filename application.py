@@ -308,6 +308,9 @@ def classes():
 
         if not request.form.get("code"):
             return apology("must provide class code", 403)
+        
+        if not request.form.get("class_section"):
+            return apology("must provide class section", 403)
 
         # Add class to database
         try:
@@ -315,7 +318,8 @@ def classes():
                             session["user_id"],
                             request.form.get("class_name"),
                             request.form.get("period"),
-                            request.form.get("code"))
+                            request.form.get("code"),
+                            request.form.get("class_section"))
         except RuntimeError:
             return apology("class already exists")
 
