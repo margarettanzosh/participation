@@ -43,7 +43,7 @@ Session(app)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Configure CS50 Library to use SQLite database
-db = SQL("postgres://mwqprqdzfhovbu:72391f536084fbdfd3b07bcedd57996e24147c3b3eda6f873f9cf920263c644e@ec2-52-44-139-108.compute-1.amazonaws.com:5432/d3c6j4puj8cblo")
+db = SQL(os.environ.get("DATABASE_URL"))
 
 
 @app.route("/")
