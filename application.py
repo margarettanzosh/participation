@@ -96,7 +96,7 @@ def upload_file():
 #         reader = csv.DictReader(f)
 #         fields = reader.fieldnames
 
-        for row in reader:
+        for row in csv_dicts:
             id = row["ID"]
             course = row["Course"]
 
