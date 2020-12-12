@@ -6,25 +6,68 @@
 
 {% block main %}
 
-  <div>
+  <div class="report">
     <form action="/report" method="POST">
 
       <h5 class="mb-3">Download Skedula CSV File</h5>
-      <select name="class_id" class="custom-select">
+      <select id="class_id" name="class_id" class="custom-select">
         <option value="0" selected>Choose a Class</option>
         {% for class in classes %}
         <option value={{ class.id }}>{{ class.class_name }}</option>
         {% endfor %}
       </select>
 
-      <label for="start">Start date:</label>
-      <input class="form-control mr-4 mt-4" id="start" type="date" name="start_date">
+      <div class="row mt-4 justify-content-between" id="dates">
+        <div class="mr-4">
+          <label for="start">Start date:</label>
+          <input class="form-control" id="start" type="date" name="start_date">
+        </div>
+        <div class="ml-4">
+          <label for="end">End date:</label>
+          <input class="form-control" id="end" type="date" name="end_date">
+        </div>
 
-      <label for="end">End date:</label>
-      <input class="form-control" id="end" type="date" name="end_date">
+      </div>
 
-      <button class="btn btn-primary" type="submit">Generate Report</button>
+      <div class="text-left mt-4">
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" name="customize" id="custom" data-target="#collapseExample">
+          <label class="form-check-label" for="custom">Customize Output to Convert Parcipation Days to Skedula Points</label>
+        </div>
 
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body">
+            <p><strong>Good:</strong> Up to and including <input class="form-control sm cust-input" name="good_pp" placeholder="?" value="1" type="number">days, earns
+              <input class="form-control sm cust-input" name="good_sk" placeholder="?" value="5" type="number">skedula points.
+            </p>
+            <p><strong>Better:</strong> Addition days up to<input class="form-control sm cust-input" name="better_pp" placeholder="?" value="3" type="number">days, earns
+              <input class="form-control sm cust-input" name="better_sk" placeholder="?" value="10" type="number">skedula points.
+            </p>
+            <p><strong>Best: </strong>Extra credit for over<input class="form-control sm cust-input" name="best_pp" placeholder="?" value="3" type="number">days, earns
+              <input class="form-control sm cust-input" name="best_sk" placeholder="?" value="15" type="number">skedula points.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <button id="generate" class="btn btn-primary mt-4 btn-block" type="submit">Generate Report</button>
+
+    </form>
   </div>
+  <script>
+
+    $('#custom').change(function() {
+       if ($(this).is(':checked')) {
+         console.log("Checkbox is checked..")
+         // $('.collapse').collapse()
+         $('.collapse').addClass('show')
+
+       } else {
+         console.log("Checkbox is not checked..")
+         $('.collapse').removeClass('show')
+       }
+     });
+
+  </script>
 
 {% endblock %}
