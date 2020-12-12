@@ -68,3 +68,24 @@ main img
    width: 40%;
    margin: auto;
  }
+
+.report {
+   width: 60%;
+   margin: auto;
+ }
+
+#dates {
+  width: 100%;
+  margin: auto;
+}
+
+#generate {
+  margin-left: -15px;
+  margin: 0;
+}
+
+.cust-input {
+  width: 60px !important;
+  margin: 0px 10px;
+}
+
