@@ -213,8 +213,30 @@ def report():
                                     WHERE teacher_id = ? AND class_id = ? AND date >= ? and date <= ?
                                     GROUP BY student_id""", session["user_id"], request.form.get("class_id"), start_date, end_date)
         classes = db.execute("SELECT * FROM classes WHERE id = ? AND teacher_id = ?", request.form.get("class_id"), session["user_id"])
-        print(classes)
 
+        customize = False
+
+        if 'on' in request.form.getlist("customize"):
+            customize = True
+            good_pp = request.form.get("good_pp")
+            good_sk = request.form.get("good_sk")
+            better_pp = request.form.get("better_pp")
+            better_sk = request.form.get("better_sk")
+            best_pp = request.form.get("best_pp")
+            best_sk = request.form.get("best_sk")
+
+            print("Good PP: ", good_pp)
+
+            if not good_pp or not good_sk or not better_pp or not better_sk or not best_pp or not best_sk:
+                return apology("please complete conversion into", 403)
+
+            good_pp = int(good_pp)
+            good_sk = int(good_sk)
+            better_pp = int(better_pp)
+            better_sk = int(better_sk)
+            best_pp = int(best_pp)
+            best_sk = int(best_sk)
+        
         course_code = classes[0]['class_code']
         section = classes[0]['section']
 
@@ -230,9 +252,9 @@ def report():
 
         # Write row for each student
         for row in participation:
-            # print(row)
             student = db.execute("SELECT * FROM students WHERE student_id = ?", row['student_id'])
-            # print(student[0]['last_name'])
+            if customize:
+                row['points'] = best_sk if row['points'] > best_pp else better_sk if row['points'] >= better_pp else good_sk if row['points'] >= good_pp else 0
             contents.append([student[0]['last_name'], student[0]['first_name'], str(student[0]['student_id']), course_code, str(section), str(row['points'])])
             # writer.writerow(([student[0]['last_name'], student[0]['first_name'], student[0]['student_id'], course_code, section, row['points']]))
         # file.close()
