@@ -179,11 +179,11 @@ def save():
 
 @app.route('/download/<string:dfilename>')
 def generate_large_csv(dfilename):
-#     @stream_with_context
     def generate():
         for row in contents:
             yield ','.join(row) + '\n'
-    return Response(generate(), mimetype='text/csv')
+    return Response(generate(), mimetype='text/csv',  headers={"Content-disposition":
+                 "attachment; filename=" +dfilename})
 
 
 @app.route("/report", methods=["GET", "POST"])
