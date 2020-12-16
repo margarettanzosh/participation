@@ -113,7 +113,7 @@ def upload_file():
 
     # GET request
     else:
-        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
+        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ? ORDER BY class_period", session["user_id"])
         return render_template("upload.html", classes=classes)
 
 
@@ -122,7 +122,7 @@ def upload_file():
 def participation():
     """Track Student Participation"""
 
-    classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
+    classes = db.execute("SELECT * FROM classes WHERE teacher_id = ? ORDER BY class_period", session["user_id"])
     return render_template("select_class.html", classes=classes)
 
 
@@ -143,7 +143,7 @@ def select():
         student_list.append((student['first_name'], student['last_name'], student['student_id']))
     student_list.sort()
     # classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
-    class_name = db.execute("SELECT class_name FROM classes WHERE id = ?", selected_class)
+    class_name = db.execute("SELECT class_name FROM classes WHERE id = ? ORDER BY class_period", selected_class)
     return render_template("track.html", students=student_list, selected_class=selected_class, class_name=class_name[0]['class_name'])
 
 
@@ -156,7 +156,6 @@ def save():
     if request.method == 'POST':
         print('Incoming..')
         selected_students = request.get_json()  # parse as JSON
-        print(selected_students)
 
         # Check JSON
         selected_class = selected_students["selected_class"]
@@ -212,7 +211,7 @@ def report():
         participation = db.execute("""SELECT student_id, SUM(points) AS points FROM participation
                                     WHERE teacher_id = ? AND class_id = ? AND date >= ? and date <= ?
                                     GROUP BY student_id""", session["user_id"], request.form.get("class_id"), start_date, end_date)
-        classes = db.execute("SELECT * FROM classes WHERE id = ? AND teacher_id = ?", request.form.get("class_id"), session["user_id"])
+        classes = db.execute("SELECT * FROM classes WHERE id = ? AND teacher_id = ? ORDER BY class_period", request.form.get("class_id"), session["user_id"])
 
         customize = False
 
@@ -266,7 +265,7 @@ def report():
 
     # GET Request
     else:
-        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
+        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ? ORDER BY class_period", session["user_id"])
         return render_template("report.html", classes=classes)
 
 
@@ -357,7 +356,7 @@ def classes():
 
     # GET
     else:
-        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
+        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ? ORDER BY class_period", session["user_id"])
         return render_template("add_classes.html", classes=classes)
 
 
@@ -390,7 +389,7 @@ def students():
         db.execute("INSERT INTO students_classes (student_id, class_id) VALUES(?, ?)", request.form.get("student_id"), request.form.get("class_id"))
         return redirect("/students")
     else:
-        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ?", session["user_id"])
+        classes = db.execute("SELECT * FROM classes WHERE teacher_id = ? ORDER BY class_period", session["user_id"])
         return render_template("students.html", classes=classes)
 
 
