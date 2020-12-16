@@ -3,7 +3,7 @@ import csv
 import sys
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response, Response, url_for
+from flask import Flask, flash, redirect, render_template, request, session, jsonify, make_response, Response, url_for, stream_with_context
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -179,6 +179,7 @@ def save():
 
 @app.route('/download/<string:dfilename>')
 def generate_large_csv(dfilename):
+    @stream_with_context
     def generate():
         for row in contents:
             yield ','.join(row) + '\n'
